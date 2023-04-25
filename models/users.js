@@ -50,6 +50,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false, // NOT NULL
         type: DataTypes.STRING,
       },
+      // passwordConfirm: {
+      //   allowNull: false,
+      //   type: DataTypes.STRING,
+      // },
       createdAt: {
         allowNull: false, // NOT NULL
         type: DataTypes.DATE,

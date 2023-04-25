@@ -4,15 +4,27 @@ const jwt = require('jsonwebtoken');
 const { Users } = require('../models');
 
 module.exports = async (req, res, next) => {
-  try {
-    const { authorization } = req.cookies;
-    const [tokenType, token] = authorization.split(' ');
-    if (tokenType !== 'Bearer') {
-      return res
-        .status(401)
-        .json({ message: '토큰 타입이 일치하지 않습니다.' });
-    }
+  const { authorization } = req.cookies;
+  console.log(req.cookies);
 
+  if (!authorization) {
+    res.status(400).json({
+      errorMessage: '로그인이 필요한 기능입니다.',
+    });
+    return;
+  }
+
+  const [tokenType, token] = authorization.split(' ');
+  console.log(tokenType, token);
+
+  if (tokenType !== 'Bearer' || !token) {
+    res.status(401).json({
+      message: '전달된 쿠키에서 오류가 발생하였습니다.',
+    });
+    return;
+  }
+
+  try {
     const decodedToken = jwt.verify(token, 'customized_secret_key');
     const userId = decodedToken.userId;
 
